@@ -7,8 +7,9 @@ surface = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Pet Warriors')
 
 assets = os.path.join(os.getcwd(), 'Assets')
-dirt = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'dirt.jpg')), (50, 50))
 background = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'background.jpg')), (width, height))
+dirt = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'dirt.png')), (50, 50))
+snow = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'snow.jpg')), (50, 50))
 
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
@@ -96,7 +97,7 @@ def draw_window(current_map, player):
         for x in range(len(current_map[y])):
             if current_map[y][x] == 'X':
                 if y != 0 and current_map[y - 1][x] != 'X':
-                    surface.blit(dirt, (x * 50, y * 50))
+                    surface.blit(snow, (x * 50, y * 50))
                 else:
                     surface.blit(dirt, (x * 50, y * 50))
 
