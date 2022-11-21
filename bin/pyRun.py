@@ -1,9 +1,14 @@
 import pygame
+import os
 
 pygame.init()
 width, height = 1200, 700
 surface = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Pet Warriors')
+
+assets = os.path.join(os.getcwd(), 'Assets')
+dirt = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'dirt.jpg')), (50, 50))
+background = pygame.transform.scale(pygame.image.load(os.path.join(assets, 'background.jpg')), (width, height))
 
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
@@ -28,7 +33,7 @@ tile_map = (
 
 def colisao(rect1, rect2):
     if not(rect1.x + rect1.width <= rect2.x or rect2.x + rect2.width <= rect1.x):
-        if not (rect1.y + rect1.height <= rect2.y or rect2.height <= rect1.y):
+        if not(rect1.y + rect1.height <= rect2.y or rect2.y + rect2.height <= rect1.y):
             return True
     return False
 
@@ -56,7 +61,7 @@ class Player(Character):
         super().__init__(x, y, width, height, 5)
         self.jumping = False
         self.falling = False
-        self.max_jumps = 20
+        self.max_jumps = 50
         self.jumps_left = self.max_jumps
 
     def handle_movement(self, key):
@@ -86,12 +91,14 @@ class Player(Character):
            self.jumping = True
         
 def draw_window(current_map, player):
-    surface.fill(PRETO)
+    surface.blit(background, (0, 0))
     for y in range(len(current_map)):
         for x in range(len(current_map[y])):
             if current_map[y][x] == 'X':
-                rect = pygame.Rect(x * 50, y * 50, 50, 50)
-                pygame.draw.rect(surface, BRANCO, rect)
+                if y != 0 and current_map[y - 1][x] != 'X':
+                    surface.blit(dirt, (x * 50, y * 50))
+                else:
+                    surface.blit(dirt, (x * 50, y * 50))
 
     player_rect = pygame.Rect(player.x, player.y, player.width, player.height)
     pygame.draw.rect(surface, VERMELHO, player_rect)
